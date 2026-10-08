@@ -9,6 +9,5 @@ package capitaly;
  * @author natas
  */
 public interface Strategy {
-    
-    public boolean willBuy(Player p, int cost);
+    boolean willBuy(Player p, int cost);
 }

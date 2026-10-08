@@ -8,6 +8,18 @@ package capitaly;
  *
  * @author natas
  */
-public class Tactical {
+public class Tactical implements Strategy {
+    private boolean skip = false;
     
+    @Override
+    public boolean willBuy(Player p, int cost) {
+        if (skip) {
+            skip = false;
+            return false;
+        }
+        else {
+            skip = true;
+            return p.getBalance() >= cost;
+        }
+    }
 }

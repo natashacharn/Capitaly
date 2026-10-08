@@ -8,6 +8,9 @@ package capitaly;
  *
  * @author natas
  */
-public class Careful {
-    
+public class Careful implements Strategy {
+    @Override
+    public boolean willBuy(Player p, int cost) {
+        return (p.getBalance() / 2 ) >= cost;
+    }
 }

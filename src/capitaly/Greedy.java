@@ -8,6 +8,9 @@ package capitaly;
  *
  * @author natas
  */
-public class Greedy {
-    
+public class Greedy implements Strategy {
+    @Override
+    public boolean willBuy(Player p, int cost) {
+        return p.getBalance() >= cost;
+    }
 }

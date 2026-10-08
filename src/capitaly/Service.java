@@ -8,6 +8,16 @@ package capitaly;
  *
  * @author natas
  */
-public class Service {
+public class Service extends Field{
+    private final int cost;
     
+    public Service(String n, int cost) {
+        super(n);
+        this.cost = cost;
+    }
+    
+    @Override
+    public void stepOn(Player p){
+        p.pay(cost);
+    }
 }

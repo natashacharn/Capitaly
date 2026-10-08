@@ -9,9 +9,17 @@ package capitaly;
  * @author natas
  */
 public abstract class Field {
-    public final String name;
+    public String name;
     
     public Field(String n) {
+        this.name = n;
+    }
+    
+    public String getName() {
+        return this.name;
+    }
+    
+    public void setName(String n) {
         this.name = n;
     }
     

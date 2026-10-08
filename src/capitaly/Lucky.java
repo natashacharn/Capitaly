@@ -8,6 +8,16 @@ package capitaly;
  *
  * @author natas
  */
-public class Lucky {
+public class Lucky extends Field{
+    private final int reward;
     
+    public Lucky(String n, int reward) {
+        super(n);
+        this.reward = reward;
+    }
+    
+    @Override
+    public void stepOn(Player p){
+        p.deposit(reward);
+    }
 }

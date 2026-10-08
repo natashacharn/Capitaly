@@ -12,15 +12,17 @@ import java.util.*;
  */
 public class Player {
     private final String name;
-    private final int income;
+    private int balance;
     public List<Property> properties = new ArrayList<>();
     public Strategy strat;
     private boolean isBroke;
+    private int position;
     
     public Player(String n) {
         this.isBroke = false;
-        this.income = 10000;
+        this.balance = 10000;
         this.name = n;
+        this.position = 0;
     }
     
     public void addProperty(Property p) {
@@ -31,6 +33,22 @@ public class Player {
         return this.properties;
     }
     
+    public int getPosition() {
+        return this.position;
+    }
+    
+    public void setPosition(int pos) {
+        this.position = pos;
+    }
+    
+    public int getBalance() {
+        return this.balance;
+    }
+    
+    public void setBalance(int c) {
+        this.balance = c;
+    }
+    
     public Strategy getStrategy() {
         return this.strat;
     }
@@ -39,14 +57,49 @@ public class Player {
         this.strat = s;
     }
     
-    public boolean getBroke() {
+    public boolean isBroke() {
         return this.isBroke;
     }
     
     public void goBroke() {
         this.isBroke = true;
+        this.balance = 0;
+        for (Property prop : properties) {
+            prop.reset();
+        }
+        properties.clear();
     }
     
+    public boolean canBuy(int cost) {
+        if (balance < cost) return false;
+        
+        return strat.willBuy(this, cost);
+    }
     
+    public void deposit(int amt) {
+        this.balance += amt;
+    }
+    
+    public void pay(int cost){
+        if (this.getBalance() < cost) {
+            this.goBroke();
+        }
+        else {
+            this.balance -= cost;
+        }
+    }
+    
+    public void payDues(int amt, Player recip){
+        if (this.getBalance() < amt) {
+            recip.deposit(balance);
+            this.goBroke();
+        }
+        else {
+            balance -= amt;
+            recip.deposit(amt);
+        }
+        
+    }
+   
 }
 
