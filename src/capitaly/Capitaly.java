@@ -27,6 +27,7 @@ public class Capitaly {
         
         try (Scanner scanner = new Scanner (file)) {
             // Parse number of fields and into their subclasses
+            
             if (!scanner.hasNextInt()) {
                 throw new InvalidDataException("Expected total # of fields.");
             }
@@ -38,7 +39,7 @@ public class Capitaly {
             }
             
             for (int i = 0; i < amtFields; i++) {
-                if (!scanner.nextLine()) {
+                if (!scanner.next()) {
                     throw new InvalidDataException("Unexpected EOF.");
                 }
                 String fieldType = scanner.next();
@@ -58,7 +59,7 @@ public class Capitaly {
                     if (fee <= 0 ) {
                         throw new InvalidDataException("Fee cannot be <= 0.");
                     }
-                    board.add(new Service(name, fee);
+                    board.add(new Service(name, fee));
                 }
                 
                 else if (fieldType.equalsIgnoreCase("Lucky")) {
@@ -71,13 +72,51 @@ public class Capitaly {
                     if (reward <= 0 ) {
                         throw new InvalidDataException("Reward cannot be <= 0.");
                     }
-                    board.add(new Lucky(name, reward);
+                    board.add(new Lucky(name, reward));
                 }
-                
+            
+                else {
+                    throw new InvalidDataException("Unknown field type: '" + type + "' at field number " + (i + 1));
+                }
             }
             
+            // players
+            if (!scanner.hasNextInt()) {
+                throw new InvalidDataException("Expected total # of players.");
+            }
+
+            int amtPlayers = scanner.nextInt();
             
+            if (amtPlayers < 2) {
+                throw new InvalidDataException("Requires at least 2 players.");
+            }
             
+            for (int i = 0; i < amtPlayers; i++){
+                if (!scanner.next()) {
+                    throw new InvalidDataException("Unexpected EOF.");
+                }
+                
+                String playerName = scanner.next().trim();
+                
+                if (!scanner.next()) {
+                    throw new InvalidDataException("Unexpected EOF.");
+                }
+                
+                String stratType = scanner.next().trim();
+                
+                Strategy strategy;
+                switch (stratType.toLowerCase()) {
+                    case "greedy" -> strategy = new Greedy();
+                   
+                    case "careful" -> strategy = new Careful();
+                    
+                    case "tactical" -> strategy = new Tactical();
+                    
+                    default -> throw new InvalidGameDataException("Invalid strategy '" + stratType + "' for player: " + name);
+                }
+                
+                players.add(new Player(playerName, strategy));
+            }
             
         }
     }
