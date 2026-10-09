@@ -21,10 +21,6 @@ public class Capitaly {
     
     private Player winner;
     
-    public Player getWinner() {
-        return this.winner;
-    }
-    
     public void loadGame(String fp) throws FileNotFoundException, InvalidDataException {
         File file = new File(fp);
         if (!file.exists() || !file.isFile()){
@@ -179,8 +175,12 @@ public class Capitaly {
         printWinner();
     }
     
+    public Player getWinner() {
+        return this.winner;
+    }
+    
     public void printWinner(){
-        Player winner = null;
+        winner = null;
         int max = -100;
         
         for (Player p : players) {

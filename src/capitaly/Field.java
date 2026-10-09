@@ -9,7 +9,7 @@ package capitaly;
  * @author natas
  */
 public abstract class Field {
-    public String name;
+    protected String name;
     
     public Field(String n) {
         this.name = n;
