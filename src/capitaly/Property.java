@@ -11,19 +11,15 @@ package capitaly;
 public class Property extends Field{
     private Player owner;
     private boolean hasHouse;
-    public final int costNoHouse;
-    public final int costWithHouse;
-    public final int rentNoHouse;
-    public final int rentWithHouse;
+    public static final int COST_NO_HOUSE = 1000;
+    public static final int COST_HOUSE = 4000;
+    public static final int RENT_NO_HOUSE = 500;
+    public static final int RENT_HOUSE = 2000;
     
     public Property (String name) {
         super(name);
         this.owner = null;
         this.hasHouse = false;
-        this.costNoHouse = 1000;
-        this.costWithHouse = 4000;
-        this.rentNoHouse = 500;
-        this.rentWithHouse = 2000;
     }
     
     public boolean hasHouse() {
@@ -46,20 +42,21 @@ public class Property extends Field{
     @Override 
     public void stepOn(Player p) {
         if (owner == null) {
-            if (p.canBuy(costNoHouse)) {
-                p.pay(costNoHouse);
+            if (p.canBuy(COST_NO_HOUSE)) {
+                p.pay(COST_NO_HOUSE);
+                this.owner = p;
+                p.addProperty(this);
             }
-            this.owner = p;
-            p.addProperty(this);
+            
         }
         else if (p == owner) {
-            if (p.canBuy(costWithHouse) && !hasHouse){
-                p.pay(costWithHouse);
+            if (p.canBuy(COST_HOUSE) && !hasHouse){
+                p.pay(COST_HOUSE);
                 this.hasHouse = true;
             }
         }
         else {
-            int rent = hasHouse ? rentWithHouse : rentNoHouse;
+            int rent = hasHouse ? RENT_HOUSE : RENT_NO_HOUSE;
             p.payDues(rent, owner);
         }
         
