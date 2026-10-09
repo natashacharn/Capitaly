@@ -18,11 +18,16 @@ public class Player {
     private boolean isBroke;
     private int position;
     
-    public Player(String n) {
+    public Player(String n, Strategy strat) {
         this.isBroke = false;
         this.balance = 10000;
         this.name = n;
+        this.strat = strat;
         this.position = 0;
+    }
+    
+    public String getName() {
+        return this.name;
     }
     
     public void addProperty(Property p) {
