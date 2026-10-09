@@ -44,53 +44,66 @@ public class Capitaly {
             if (amtFields <= 0){
                 throw new InvalidDataException("# of fields must be greater than 0.");
             }            
-            
+            // Consume any dangling newline from reading amtFields
+            scanner.nextLine();
+
             for (int i = 0; i < amtFields; i++) {
-                if (!scanner.hasNext()) {
+                if (!scanner.hasNextLine()) {
                     throw new InvalidDataException("Unexpected EOF.");
                 }
-                String fieldType = scanner.next();
-                
-                if (fieldType.equalsIgnoreCase("Property")) {
-                    String name = scanner.next();
-                    if (name.isEmpty()) {
-                        throw new InvalidDataException("Missing property name.");
-                    }
-                    board.add(new Property(name));
-                }
-                
-                else if (fieldType.equalsIgnoreCase("Service")) {
-                    String name = scanner.next();
 
-                    if (!scanner.hasNextInt()) {
-                        throw new InvalidDataException("Service field:" + name + "is missing the fee parameter.");
-                    }
-                    
-                    int fee = scanner.nextInt();
-                    
-                    if (fee <= 0 ) {
-                        throw new InvalidDataException("Fee cannot be <= 0.");
-                    }
-                    scanner.nextLine();
-                    board.add(new Service(name, fee));
-                }
+                String line = scanner.nextLine().trim();
                 
-                else if (fieldType.equalsIgnoreCase("Lucky")) {
-                    String name = scanner.next();
-                    if (!scanner.hasNextInt()) {
-                        throw new InvalidDataException("Lucky field:" + name + "is missing the reward parameter");
+                while (line.isEmpty()) {
+                    if (!scanner.hasNextLine()) {
+                        throw new InvalidDataException("Unexpected EOF.");
                     }
-                    int reward = scanner.nextInt();
-                    
-                    if (reward <= 0 ) {
-                        throw new InvalidDataException("Reward cannot be <= 0.");
-                    }
-                    scanner.nextLine();
-                    board.add(new Lucky(name, reward));
+                    line = scanner.nextLine().trim();
                 }
-            
-                else {
-                    throw new InvalidDataException("Unknown field type: '" + fieldType + "' at field " + (i + 1));
+
+                try (Scanner lineScanner = new Scanner(line)) {
+                    String fieldType = lineScanner.next();
+
+                    if (fieldType.equalsIgnoreCase("Property")) {
+                        if (!lineScanner.hasNext()) {
+                            throw new InvalidDataException("Missing property name at field #" + (i + 1));
+                        }
+                        String name = lineScanner.next();
+                        board.add(new Property(name));
+                    } 
+                    else if (fieldType.equalsIgnoreCase("Service")) {
+                        if (!lineScanner.hasNext() || lineScanner.hasNextInt()) {
+                            throw new InvalidDataException("Missing service name at field #" + (i + 1));
+                        }
+                        String name = lineScanner.next();
+
+                        if (!lineScanner.hasNextInt()) {
+                            throw new InvalidDataException("Service field: " + name + " is missing the fee parameter.");
+                        }
+                        int fee = lineScanner.nextInt();
+                        if (fee <= 0) {
+                            throw new InvalidDataException("Fee cannot be <= 0.");
+                        }
+                        board.add(new Service(name, fee));
+                    } 
+                    else if (fieldType.equalsIgnoreCase("Lucky")) {
+                        if (!lineScanner.hasNext() || lineScanner.hasNextInt()) {
+                            throw new InvalidDataException("Missing lucky name at field #" + (i + 1));
+                        }
+                        String name = lineScanner.next();
+
+                        if (!lineScanner.hasNextInt()) {
+                            throw new InvalidDataException("Lucky field: " + name + " is missing the reward parameter.");
+                        }
+                        int reward = lineScanner.nextInt();
+                        if (reward <= 0) {
+                            throw new InvalidDataException("Reward cannot be <= 0.");
+                        }
+                        board.add(new Lucky(name, reward));
+                    } 
+                    else {
+                        throw new InvalidDataException("Unknown field type: '" + fieldType + "' at field " + (i + 1));
+                    }
                 }
             }
             
@@ -105,31 +118,40 @@ public class Capitaly {
                 throw new InvalidDataException("Requires at least 2 players.");
             }
             
-            for (int i = 0; i < amtPlayers; i++){
-                if (!scanner.hasNext()) {
+            for (int i = 0; i < amtPlayers; i++) {
+                if (!scanner.hasNextLine()) {
                     throw new InvalidDataException("Unexpected EOF.");
                 }
-                
-                String playerName = scanner.next().trim();
-                
-                if (!scanner.hasNext()) {
-                    throw new InvalidDataException("Unexpected EOF.");
+
+                String line = scanner.nextLine().trim();
+                while (line.isEmpty()) {
+                    if (!scanner.hasNextLine()) {
+                        throw new InvalidDataException("Unexpected EOF.");
+                    }
+                    line = scanner.nextLine().trim();
                 }
-                
-                String stratType = scanner.next().trim();
-                
-                Strategy strategy;
-                switch (stratType.toLowerCase()) {
-                    case "greedy" -> strategy = new Greedy();
-                   
-                    case "careful" -> strategy = new Careful();
-                    
-                    case "tactical" -> strategy = new Tactical();
-                    
-                    default -> throw new InvalidDataException("Invalid strategy '" + stratType + "' for player: " + playerName);
+
+                try (Scanner lineScanner = new Scanner(line)) {
+                    if (!lineScanner.hasNext()) {
+                        throw new InvalidDataException("Missing player name for player #" + (i + 1));
+                    }
+                    String playerName = lineScanner.next();
+
+                    if (!lineScanner.hasNext()) {
+                        throw new InvalidDataException("Missing strategy for player: " + playerName);
+                    }
+                    String stratType = lineScanner.next();
+
+                    Strategy strategy;
+                    switch (stratType.toLowerCase()) {
+                        case "greedy" -> strategy = new Greedy();
+                        case "careful" -> strategy = new Careful();
+                        case "tactical" -> strategy = new Tactical();
+                        default -> throw new InvalidDataException("Invalid strategy '" + stratType + "' for player: " + playerName);
+                    }
+
+                    players.add(new Player(playerName, strategy));
                 }
-                
-                players.add(new Player(playerName, strategy));
             }
             
             // Parse dice rolls
