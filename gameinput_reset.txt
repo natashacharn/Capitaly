@@ -1,0 +1,13 @@
+3
+Property Baltic_Avenue
+Service Luxury_Tax 8000
+Lucky Windfall 1000
+2
+Leo Greedy
+Maya Careful
+3
+3
+3
+3
+1
+1

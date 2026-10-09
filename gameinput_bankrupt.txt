@@ -1,0 +1,9 @@
+3
+Property Elm_Street
+Service Huge_Fine 11000
+Lucky Prize 1000
+2
+David Greedy
+Sarah Careful
+1
+2

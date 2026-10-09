@@ -16,6 +16,10 @@ public class Lucky extends Field{
         this.reward = reward;
     }
     
+    /**
+     * Rewards the player with cash, calling p.deposit(reward)
+     * @param p player who is stepping on the field
+     */
     @Override
     public void stepOn(Player p){
         p.deposit(reward);

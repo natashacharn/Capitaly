@@ -22,7 +22,7 @@ public class InvalidDataException extends Exception {
     /**
      * Constructs an instance of <code>InvalidDataException</code> with the
      * specified detail message.
-     *
+     * 
      * @param msg the detail message.
      * @param cause
      */

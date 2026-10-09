@@ -16,29 +16,51 @@ public class Property extends Field{
     public static final int RENT_NO_HOUSE = 500;
     public static final int RENT_HOUSE = 2000;
     
+
     public Property (String name) {
         super(name);
         this.owner = null;
         this.hasHouse = false;
     }
     
+    /**
+     * Returns true if the property field has a house and false if not.
+     * @return
+     */
     public boolean hasHouse() {
         return this.hasHouse;
     }
     
+    /**
+     * Returns the owner of the property
+     * @return
+     */
     public Player getOwner() {
         return this.owner;
     }
     
+    /**
+     * Sets the owner of the property to a target player
+     * @param p the target player
+     */
     public void setOwner(Player p) {
         this.owner = p;
     }
     
+    /**
+     * Clears the ownership and removes houses when the owner goes bankrupt.
+     */
     public void reset() {
         this.owner = null;
         this.hasHouse = false;
     }
     
+    /**
+     * Checks for an owner, and asks if player can buy it
+     * If owned, asks if the player wants to purchase a house
+     * and charges the rent if owned, with or without a house.
+     * @param p the target player stepping on the current field
+     */
     @Override 
     public void stepOn(Player p) {
         if (owner == null) {

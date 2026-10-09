@@ -1,0 +1,12 @@
+4
+Property First_Lane
+Property Second_Lane
+Property Third_Lane
+Lucky Bonus 500
+2
+Tom Tactical
+Jerry Careful
+1
+3
+1
+1

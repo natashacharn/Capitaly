@@ -9,6 +9,10 @@ import static org.junit.Assert.*;
 
 public class CapitalyTest {
 
+    /**
+     * Tests if the game simulation works
+     * @throws Exception
+     */
     @Test
     public void testGameSimulation() throws Exception {
         Capitaly game = new Capitaly();
@@ -33,6 +37,10 @@ public class CapitalyTest {
         assertEquals("King_Estates", winner.getProperties().get(2).getName());
     }
 
+    /**
+     * Tests if the wealth increases based on house or no house
+     * @throws Exception
+     */
     @Test
     public void testHouseAndWealth() throws Exception {
         Capitaly game = new Capitaly();
@@ -55,6 +63,10 @@ public class CapitalyTest {
         assertEquals("Boardwalk", winner.getProperties().get(0).getName());
     }
 
+    /**
+     * Tests if the game still ends and prints a winner when everyone goes bankrupt
+     * @throws Exception
+     */
     @Test
     public void testBrokeElims() throws Exception {
         Capitaly game = new Capitaly();
@@ -76,6 +88,10 @@ public class CapitalyTest {
         assertEquals(0, winner.getProperties().size());
     }
 
+    /**
+     * Test if the tactical strategy wins the games
+     * @throws Exception
+     */
     @Test
     public void testTacticalBuy() throws Exception {
         Capitaly game = new Capitaly();
@@ -98,6 +114,10 @@ public class CapitalyTest {
         assertEquals("First_Lane", winner.getProperties().get(0).getName());
     }
     
+    /**
+     * Test if it shows that a bankrupt player has no properties 
+     * @throws Exception
+     */
     @Test
     public void testHouseRentAndBrokeReset() throws Exception {
         Capitaly game = new Capitaly();

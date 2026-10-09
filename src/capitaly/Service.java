@@ -16,6 +16,10 @@ public class Service extends Field{
         this.cost = cost;
     }
     
+    /**
+     * Charges the player a service fee with p.pay(cost) to the bank.
+     * @param p player that steps on the field
+     */
     @Override
     public void stepOn(Player p){
         p.pay(cost);

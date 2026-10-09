@@ -20,7 +20,12 @@ public class Capitaly {
     private final List<Integer> diceRolls = new ArrayList<>();
     
     private Player winner;
-    
+    /**
+     * Parses the file input into data for the players, board fields, and dice rolls.
+     * @param fp the filePath to the game input text file
+     * @throws FileNotFoundException if file is not found or can't be opened
+     * @throws InvalidDataException if there are any data validation/parsing issues.
+     */
     public void loadGame(String fp) throws FileNotFoundException, InvalidDataException {
         File file = new File(fp);
         if (!file.exists() || !file.isFile()){
@@ -145,6 +150,9 @@ public class Capitaly {
         }
     }
     
+    /**
+     * Executes the game, getting each dice roll, moving the players, and triggering the stepOn(player) onto the fields
+     */
     public void play(){
         int boardSize = board.size();
         int rollIndex = 0;
@@ -164,7 +172,12 @@ public class Capitaly {
                     p.setPosition(newPosition);
                     board.get(newPosition).stepOn(p);
                     
-                    if (remainingPlayers <= 1) break;
+                    if (p.isBroke()) {
+                        remainingPlayers--;
+                        if (remainingPlayers <= 1) {
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -175,10 +188,17 @@ public class Capitaly {
         printWinner();
     }
     
+    /**
+     * Returns the player who is the winner
+     * @return 
+     */
     public Player getWinner() {
         return this.winner;
     }
     
+    /**
+     * Prints the game winner, their balance, and owned properties
+     */
     public void printWinner(){
         winner = null;
         int max = -100;

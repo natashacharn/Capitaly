@@ -1,0 +1,12 @@
+4
+Property Park_Place
+Lucky Bonus 500
+Property Boardwalk
+Service Repair 200
+2
+Bob Greedy
+Alice Careful
+4
+1
+4
+1
